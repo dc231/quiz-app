@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Timer from '../components/Timer';
+import NavigationPanel from '../components/NavigationPanel';
 
 // Helper function to decode HTML entities
 const decodeHTML = (html) => {
@@ -23,6 +24,10 @@ const QuizPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { email } = location.state || {};
+
+    const handleQuestionSelect = (index) => {
+        setCurrentQuestionIndex(index);
+    };
 
     useEffect(() => {
         // If a user navigates here directly without an email, redirect them home.
@@ -103,36 +108,44 @@ const QuizPage = () => {
 
     const currentQuestion = questions[currentQuestionIndex];
     return (
-        <div className="quiz-container">
-            <div className="quiz-header">
-                <h2>Question {currentQuestionIndex + 1}/{questions.length}</h2>
-                <Timer duration={30 * 60} onTimeUp={handleSubmit} /> 
-            </div>
-            <h3>{currentQuestion.question}</h3>
+        <div className="quiz-page-layout">
+            <NavigationPanel
+                totalQuestions={questions.length}
+                userAnswers={userAnswers}
+                currentQuestionIndex={currentQuestionIndex}
+                onQuestionSelect={handleQuestionSelect}
+            />
+            <div className="quiz-container">
+                <div className="quiz-header">
+                    <h2>Question {currentQuestionIndex + 1}/{questions.length}</h2>
+                    <Timer duration={30 * 60} onTimeUp={handleSubmit} /> 
+                </div>
+                <h3>{currentQuestion.question}</h3>
 
-            <div className="choices-container">
-                {currentQuestion.choices.map((choice, index) => (
-                    <button
-                        key={index}
-                        className={`choice-btn ${userAnswers[currentQuestionIndex] === choice ? 'selected' : ''}`}
-                        onClick={() => handleAnswerSelect(choice)}
-                    >
-                        {choice}
-                    </button>
-                ))}
-            </div>
+                <div className="choices-container">
+                    {currentQuestion.choices.map((choice, index) => (
+                        <button
+                            key={index}
+                            className={`choice-btn ${userAnswers[currentQuestionIndex] === choice ? 'selected' : ''}`}
+                            onClick={() => handleAnswerSelect(choice)}
+                        >
+                            {choice}
+                        </button>
+                    ))}
+                </div>
 
-            <div className="quiz-navigation">
-                <button onClick={handlePrev} disabled={currentQuestionIndex === 0}>
-                    Previous
-                </button>
-                {currentQuestionIndex === questions.length - 1 ? (
-                    <button onClick={handleSubmit} className="submit-btn">Submit</button>
-                ) : (
-                    <button onClick={handleNext}>
-                        Next
+                <div className="quiz-navigation">
+                    <button onClick={handlePrev} disabled={currentQuestionIndex === 0}>
+                        Previous
                     </button>
-                )}
+                    {currentQuestionIndex === questions.length - 1 ? (
+                        <button onClick={handleSubmit} className="submit-btn">Submit</button>
+                    ) : (
+                        <button onClick={handleNext}>
+                            Next
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );
