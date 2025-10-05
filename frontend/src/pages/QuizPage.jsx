@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Timer from '../components/Timer';
 
 // Helper function to decode HTML entities
 const decodeHTML = (html) => {
@@ -61,6 +62,18 @@ const QuizPage = () => {
         loadQuestions();
     }, [email, navigate]);
 
+    const handleSubmit = () => {
+        console.log("Submitting quiz...");
+        // We'll navigate to the report page, passing all necessary data
+        navigate('/report', {
+            state: {
+                questions,
+                userAnswers,
+                email
+            }
+        });
+    };
+
     const handleAnswerSelect = (answer) => {
         setUserAnswers({
             ...userAnswers,
@@ -91,7 +104,10 @@ const QuizPage = () => {
     const currentQuestion = questions[currentQuestionIndex];
     return (
         <div className="quiz-container">
-            <h2>Question {currentQuestionIndex + 1}/{questions.length}</h2>
+            <div className="quiz-header">
+                <h2>Question {currentQuestionIndex + 1}/{questions.length}</h2>
+                <Timer duration={30 * 60} onTimeUp={handleSubmit} /> 
+            </div>
             <h3>{currentQuestion.question}</h3>
 
             <div className="choices-container">
@@ -110,9 +126,13 @@ const QuizPage = () => {
                 <button onClick={handlePrev} disabled={currentQuestionIndex === 0}>
                     Previous
                 </button>
-                <button onClick={handleNext} disabled={currentQuestionIndex === questions.length - 1}>
-                    Next
-                </button>
+                {currentQuestionIndex === questions.length - 1 ? (
+                    <button onClick={handleSubmit} className="submit-btn">Submit</button>
+                ) : (
+                    <button onClick={handleNext}>
+                        Next
+                    </button>
+                )}
             </div>
         </div>
     );
