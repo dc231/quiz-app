@@ -17,6 +17,8 @@ const shuffleArray = (array) => {
 const QuizPage = () => {
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [userAnswers, setUserAnswers] = useState({});
     const location = useLocation();
     const navigate = useNavigate();
     const { email } = location.state || {};
@@ -28,8 +30,12 @@ const QuizPage = () => {
             return;
         }
 
-        const fetchQuestions = async () => {
+        const loadQuestions = async () => {
             try {
+                const cachedQuestions = sessionStorage.getItem('quizQuestions');
+                if (cachedQuestions) {
+                    setQuestions(JSON.parse(cachedQuestions));
+                } else {
                 // Fetch 15 questions from the API
                 const response = await axios.get('https://opentdb.com/api.php?amount=15');
                 const formattedQuestions = response.data.results.map((q) => ({
@@ -41,7 +47,9 @@ const QuizPage = () => {
                         decodeHTML(q.correct_answer)
                     ]),
                 }));
+                sessionStorage.setItem('quizQuestions', JSON.stringify(formattedQuestions));
                 setQuestions(formattedQuestions);
+                }
             } catch (error) {
                 console.error("Failed to fetch questions:", error);
                 alert("Failed to load the quiz. Please try again later.");
@@ -50,18 +58,62 @@ const QuizPage = () => {
             }
         };
 
-        fetchQuestions();
+        loadQuestions();
     }, [email, navigate]);
+
+    const handleAnswerSelect = (answer) => {
+        setUserAnswers({
+            ...userAnswers,
+            [currentQuestionIndex]: answer,
+        });
+    };
+
+    const handleNext = () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+        }
+    };
+
+    const handlePrev = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(currentQuestionIndex - 1);
+        }
+    };
 
     if (loading) {
         return <div>Loading quiz...</div>;
     }
 
+    if (questions.length === 0) {
+        return <div>Could not load questions. Please try again.</div>;
+    }
+
+    const currentQuestion = questions[currentQuestionIndex];
     return (
-        <div>
-            <h1>Quiz Time!</h1>
-            <p>Hello, {email}</p>
-            <p>Question data is loaded.</p>
+        <div className="quiz-container">
+            <h2>Question {currentQuestionIndex + 1}/{questions.length}</h2>
+            <h3>{currentQuestion.question}</h3>
+
+            <div className="choices-container">
+                {currentQuestion.choices.map((choice, index) => (
+                    <button
+                        key={index}
+                        className={`choice-btn ${userAnswers[currentQuestionIndex] === choice ? 'selected' : ''}`}
+                        onClick={() => handleAnswerSelect(choice)}
+                    >
+                        {choice}
+                    </button>
+                ))}
+            </div>
+
+            <div className="quiz-navigation">
+                <button onClick={handlePrev} disabled={currentQuestionIndex === 0}>
+                    Previous
+                </button>
+                <button onClick={handleNext} disabled={currentQuestionIndex === questions.length - 1}>
+                    Next
+                </button>
+            </div>
         </div>
     );
 };

@@ -47,3 +47,57 @@ body {
 .start-button:hover {
   background-color: #0056b3;
 }
+
+.quiz-container {
+  text-align: left;
+}
+
+.choices-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.choice-btn {
+  padding: 0.8rem;
+  font-size: 1rem;
+  text-align: left;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.choice-btn:hover {
+  background-color: #e9ecef;
+  border-color: #ced4da;
+}
+
+.choice-btn.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.quiz-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.quiz-navigation button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.quiz-navigation button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
