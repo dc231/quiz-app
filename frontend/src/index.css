@@ -172,3 +172,45 @@ body {
 .quiz-container {
     flex-grow: 1;
 }
+
+.report-container {
+  width: 100%;
+}
+
+.score-summary {
+  padding: 1rem;
+  background-color: #f0f2f5;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.report-details {
+  text-align: left;
+}
+
+.report-item {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.report-item h4 {
+  margin-top: 0;
+}
+
+.user-answer.correct {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.user-answer.incorrect {
+  color: #dc3545;
+  font-weight: bold;
+  text-decoration: line-through;
+}
+
+.correct-answer {
+  color: #28a745;
+  font-weight: bold;
+}
