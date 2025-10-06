@@ -8,6 +8,7 @@ const HomePage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email.trim()) {
+      sessionStorage.setItem('quizUserEmail', email);
       // Navigate to the quiz page and pass the email in the state
       navigate('/quiz', { state: { email } });
     } else {

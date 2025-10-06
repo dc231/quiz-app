@@ -50,7 +50,12 @@ const ReportPage = () => {
                     </div>
                 ))}
             </div>
-            <Link to="/" className="start-button" onClick={() => sessionStorage.removeItem('quizQuestions')}>
+            <Link to="/" className="start-button" 
+            onClick={() => {
+                sessionStorage.removeItem('quizQuestions');
+                sessionStorage.removeItem('quizUserEmail');
+                }}
+            >
                 Take a New Quiz
             </Link>
         </div>

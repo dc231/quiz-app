@@ -24,7 +24,9 @@ const QuizPage = () => {
     const [visited, setVisited] = useState(new Set([0]));
     const location = useLocation();
     const navigate = useNavigate();
-    const { email } = location.state || {};
+    const emailFromState = location.state?.email;
+    const emailFromSession = sessionStorage.getItem('quizUserEmail');
+    const email = emailFromState || emailFromSession;
 
     useEffect(() => {
         // If a user navigates here directly without an email, redirect them home.
