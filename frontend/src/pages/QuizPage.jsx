@@ -21,13 +21,10 @@ const QuizPage = () => {
     const [loading, setLoading] = useState(true);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState({});
+    const [visited, setVisited] = useState(new Set([0]));
     const location = useLocation();
     const navigate = useNavigate();
     const { email } = location.state || {};
-
-    const handleQuestionSelect = (index) => {
-        setCurrentQuestionIndex(index);
-    };
 
     useEffect(() => {
         // If a user navigates here directly without an email, redirect them home.
@@ -86,6 +83,11 @@ const QuizPage = () => {
         });
     };
 
+     const handleQuestionSelect = (index) => {
+        setCurrentQuestionIndex(index);
+        setVisited(prevVisited => new Set(prevVisited).add(index));
+    };
+
     const handleNext = () => {
         if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -114,6 +116,7 @@ const QuizPage = () => {
                 userAnswers={userAnswers}
                 currentQuestionIndex={currentQuestionIndex}
                 onQuestionSelect={handleQuestionSelect}
+                visited={visited}
             />
             <div className="quiz-container">
                 <div className="quiz-header">
