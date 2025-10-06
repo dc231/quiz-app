@@ -28,6 +28,20 @@ const NavigationPanel = ({ totalQuestions, userAnswers, currentQuestionIndex, on
                     );
                 })}
             </div>
+            <div className="nav-key">
+                <div className="key-item">
+                    <span className="key-color-box attempted"></span> Attempted
+                </div>
+                <div className="key-item">
+                    <span className="key-color-box current"></span> Current
+                </div>
+                <div className="key-item">
+                    <span className="key-color-box visited"></span> Visited
+                </div>
+                <div className="key-item">
+                    <span className="key-color-box"></span> Not Visited
+                </div>
+            </div>
         </div>
     );
 };

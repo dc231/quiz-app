@@ -168,6 +168,11 @@ body {
   font-weight: bold;
 }
 
+.nav-btn.visited {
+  background-color: #cadcef;
+  border-color: #dae0e5;
+}
+
 /* Make the quiz container take the remaining space */
 .quiz-container {
     flex-grow: 1;
@@ -213,4 +218,44 @@ body {
 .correct-answer {
   color: #28a745;
   font-weight: bold;
+}
+
+.nav-key {
+    margin-top: 1.5rem;
+    border-top: 1px solid #dee2e6;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    gap: 0.75rem;
+}
+
+.key-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.key-color-box {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f8f9fa; /* Default 'Not Visited' color */
+}
+
+.key-color-box.attempted {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.key-color-box.current {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.key-color-box.visited {
+    background-color: #cadcef;
+    border-color: #dae0e5;
 }
